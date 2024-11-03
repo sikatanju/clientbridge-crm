@@ -13,19 +13,15 @@
   </head>
 
   <body>
-    <h1>Django Project</h1>
-    <a href="{% url 'lead-list' %}">Go back to leads</a>
-
-    <br />
-    <a href="{% url 'lead-update' lead.pk %}">Update Leads</a>
-    <a href="{% url 'lead-delete' lead.pk %}">Delete Leads</a>
-    <br />
-    {% if lead %}
-    <div>
-      <p>{{ lead.first_name }} -- {{ lead.last_name }} -- {{ lead.age }}</p>
-      <p>Agent for this lead: {{ lead.agent }}</p>
+    <div style="margin: 10px 10px 10px 0">
+      <a href="{% url 'lead-detail' lead.pk %}">Go back {{ lead }}</a>
     </div>
-
-    {% endif %}
+    <h1>Update lead: {{ lead.first_name }} -- {{ lead.last_name }}</h1>
+    <br />
+    <br />
+    <form method="post">
+      {% csrf_token %} {{ form.as_div }}
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>

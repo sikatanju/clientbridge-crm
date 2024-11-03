@@ -13,10 +13,12 @@
   </head>
   <body>
     <h1>Django Project</h1>
+    <a href="{% url 'lead-create'%}">Create a lead</a>
     {% for lead in leads %}
     <ul>
       <li>
-        <a href="/leads/{{ lead.pk }}/">{{ lead }}</a> -- {{ lead.agent.user }}
+        <a href="{% url 'lead-detail' lead.pk %}">{{ lead }}</a> --
+        {{ lead.agent.user }}
       </li>
     </ul>
     {% endfor %}
