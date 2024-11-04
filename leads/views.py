@@ -5,6 +5,11 @@ from .models import Lead, Agent
 from .forms import LeadForm, LeadModelForm
 
 # Create your views here.
+
+def landing_page(request):
+    return render(request, 'landing.html')
+
+
 def lead_list(request):
     leads = Lead.objects.all()
     # return HttpResponse('Hello World')
@@ -44,7 +49,7 @@ def lead_update(request, pk):
 def lead_delete(request, pk):
     lead = Lead.objects.get(pk=pk)
     lead.delete()
-    return redirect('/leads')
+    return redirect('lead-list')
 
 """
 def lead_create(request):
