@@ -10,11 +10,12 @@ from leads.views import landing_page, LandingPageView, SignupView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('leads/', include('leads.urls')),
+    path('leads/', include('leads.urls', namespace='leads')),
+    path('agents/', include('agents.urls', namespace='agents')),
     path('', LandingPageView.as_view(), name='landing-page'),
     path('signup/', SignupView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'), 
 ]
 
 if settings.DEBUG:

@@ -10,7 +10,7 @@
         </h1>
         <div class="flex mb-4">
           <a
-            href="{% url 'lead-detail' lead.pk %}"
+            href="{% url 'leads:lead-detail' lead.pk %}"
             class="flex-grow text-indigo-400 border-b-2 border-indigo-500 py-2 text-lg px-1"
             >Overview</a
           >
@@ -18,7 +18,7 @@
             >Reviews</a
           >
           <a
-            href="{% url 'lead-update' lead.pk %}"
+            href="{% url 'leads:lead-update' lead.pk %}"
             class="flex-grow border-b-2 border-gray-800 py-2 text-lg px-1"
             >Details</a
           >
