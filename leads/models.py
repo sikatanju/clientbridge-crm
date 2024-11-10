@@ -4,7 +4,9 @@ from django.db.models.signals import post_save
 
 
 class User(AbstractUser):
-    pass
+    is_organizor = models.BooleanField(default=True)
+    is_agents = models.BooleanField(default=False)
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -22,6 +24,7 @@ class Lead(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -29,7 +32,6 @@ class Agent(models.Model):
     def __str__(self):
         return f'{self.user.username} -- {self.user.email}'
     
-
 
 def post_user_created_signal(sender, instance, created, **kwargs):
     print(instance, created)
