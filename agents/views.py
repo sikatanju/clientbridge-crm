@@ -1,4 +1,7 @@
 from typing import Any
+import random
+
+from django.core.mail import send_mail
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse
@@ -27,10 +30,21 @@ class AgentCreateView(OrganizorAndLoginRequiredMixin, generic.CreateView):
         return reverse("agents:agent-list")
     
     def form_valid(self, form):
-        agent = form.save(commit=False)
-        user_profile, created = UserProfile.objects.get_or_create(user=self.request.user)
-        agent.organization = user_profile
-        agent.save()
+        user = form.save(commit=False)
+        user.is_agent = True
+        user.is_organizer = False
+        user.set_password(f'{random.randint(100000, 999999)}')
+        user.save()
+
+        Agent.objects.create(
+            user=user,
+            organization=self.request.user.userprofile
+        )   
+
+        send_mail(subject='You are invited to be an agent', 
+                  message='You were added as an agent on DJCRM. Please login to start.',
+                  from_email='admin@gmail.com', recipient_list=[user.email])
+        
         return super(AgentCreateView, self).form_valid(form)
     
 
