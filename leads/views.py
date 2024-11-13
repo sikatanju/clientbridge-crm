@@ -49,11 +49,15 @@ class LeadListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(LeadListView, self).get_context_data(**kwargs)
         user =  self.request.user
+        queryset = None
         if user.is_organizer:
             queryset = Lead.objects.filter(organization=user.userprofile, agent__isnull=True)
-        context.update({
-            "unassigned_leads": queryset
-        })
+        
+        if queryset:
+            context.update({
+                "unassigned_leads": queryset
+            })
+        
         return context
 
 
@@ -101,7 +105,7 @@ class LeadUpdateView(OrganizorAndLoginRequiredMixin, generic.UpdateView):
 
 
     def get_success_url(self) -> str:
-        return reverse('lead-list')
+        return reverse('leads:lead-list')
 
 
 class LeadDeleteView(OrganizorAndLoginRequiredMixin, generic.DeleteView):
