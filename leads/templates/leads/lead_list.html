@@ -5,7 +5,13 @@
         <div
             class="w-full mb-6 py-6 flex items-center justify-between border-b border-gray-200"
         >
-            <div><h1 class="text-white text-4xl">Leads</h1></div>
+            <div>
+                <h1 class="text-white text-4xl">Leads</h1>
+                
+            </div>
+            <div>
+                <a class="text-white hover:text-blue-400" href="{% url 'leads:category-list'%}">View Categories</a>
+            </div>
             <div>
                 {% if request.user.is_organizer %}
                 <a

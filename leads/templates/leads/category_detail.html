@@ -5,10 +5,10 @@
             <h1
                 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-white"
             >
-                Categories
+                {{ category.name }}
             </h1>
             <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
-                These Categories segment the leads
+                These are the leads under this category
             </p>
         </div>
         <div class="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -18,26 +18,24 @@
                         <th
                             class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800 rounded-tl rounded-bl"
                         >
-                            Plan
+                            First Name
                         </th>
                         <th
                             class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800"
                         >
-                            Speed
+                            Last Name
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="px-4 py-3">Unassigned</td>
-                        <td class="px-4 py-3">{{ unassigned_lead_count }}</td>
-                    </tr>
-                    {% for category in category_list %}
+                    {% for lead in leads %}
                     <tr>
                         <td class="px-4 py-3 hover:text-blue-400">
-                            <a href="{% url 'leads:category-detail' category.pk %}">{{ category.name }}</a>
+                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.first_name }}</a>
                         </td>
-                        <td class="px-4 py-3">Todo Count</td>
+                        <td class="px-4 py-3 hover:text-blue-400">
+                            <a href="{% url 'leads:lead-detail' lead.pk %}">{{ lead.last_name }}</a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

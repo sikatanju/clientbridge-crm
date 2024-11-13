@@ -10,7 +10,7 @@ from django.urls import reverse
 from agents.mixins import OrganizorAndLoginRequiredMixin
 
 from .models import Lead, Agent, Category
-from .forms import LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
+from .forms import LeadCategoryUpdateForm, LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
 
 # Create your views here.
 
@@ -167,6 +167,54 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
         })
         
         return context
+
+
+class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name = 'leads/category_detail.html'
+    context_object_name = 'category'
+
+    def get_queryset(self) -> QuerySet[Any]:
+        user =  self.request.user
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization=user.agent.organization)
+
+        return queryset
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+
+        leads = self.get_object().leads.all()
+
+        context.update({
+            'leads': leads
+        })
+        
+        return context
+    
+
+class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = 'leads/lead_category_update.html'
+    form_class = LeadCategoryUpdateForm
+    
+    def get_queryset(self) -> QuerySet[Any]:
+        user =  self.request.user
+        if user.is_organizer:
+            queryset = Lead.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Lead.objects.filter(organization=user.agent.organization)
+            queryset = queryset.filter(agent__user=self.request.user)
+
+        return queryset
+
+
+    def get_success_url(self) -> str:
+        return reverse('leads:lead-detail', kwargs={'pk': self.get_object().pk})
+
+
+
+
 
 """
 def lead_create(request):
