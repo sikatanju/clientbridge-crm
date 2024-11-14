@@ -1,11 +1,37 @@
-{% extends 'base.html' %} {% block content %}
-<a href="{% url 'leads:lead-list' %}">Go back to leads</a>
-<h1>Create a new lead</h1>
-<br />
-<br />
-<form method="post">
-  {% csrf_token %} {{ form.as_div }}
-  <button type="submit">Submit</button>
-</form>
+{% extends 'base.html' %} {% load tailwind_filters %} {% block content %}
+<div class="max-w-lg mx-auto mt-10">
+    <a href="{% url 'leads:lead-list' %}"></a>
 
+    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-0 text-gray-900">
+        Create a new lead
+    </h1>
+    <br />
+    <br />
+    <form method="post">
+        {% csrf_token %} {{ form|crispy }}
+        <button
+            type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+        >
+            Submit
+        </button>
+    </form>
+    <br />
+    <a
+        href="{% url 'leads:lead-list' %}"
+        class="text-indigo-500 inline-flex items-center"
+        >Go back to leads
+        <svg
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-4 h-4 ml-2"
+            viewBox="0 0 24 24"
+        >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+    </a>
+</div>
 {% endblock %}

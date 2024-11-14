@@ -26,12 +26,8 @@ class LandingPageView(generic.TemplateView):
     template_name = 'landing.html'
 
 
-def landing_page(request):
-    return render(request, 'landing.html')
-
-
 class LeadListView(LoginRequiredMixin, generic.ListView):
-    template_name = 'leads/lead_list.html'
+    template_name = 'leads/lead_list_temp.html'
     # queryset = Lead.objects.all() 
     # # object_list -- default for context_object_name
     context_object_name = 'leads'
