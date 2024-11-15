@@ -7,7 +7,9 @@ from .models import Lead, Agent
 class LeadModelForm(forms.ModelForm):
     class Meta:
         model = Lead
-        fields = ['first_name', 'last_name', 'age', 'agent', 'organization']
+        fields = ['first_name', 'last_name', 'age', 'email', 'agent', 'description', 'phone_number']
+    
+        widgets = { 'description': forms.Textarea(attrs={'style': 'height: 100px;'})}
 
 class LeadForm(forms.Form):
     first_name = forms.CharField()

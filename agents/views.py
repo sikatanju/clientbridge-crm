@@ -65,8 +65,8 @@ class AgentUpdateView(OrganizorAndLoginRequiredMixin, generic.UpdateView):
         return reverse("agents:agent-list")
     
     def get_queryset(self) -> QuerySet[Any]:
-        organization = self.request.user.userprofile
-        return Agent.objects.filter(organization=organization)
+        user = self.request.user
+        return Agent.objects.filter(organization=user.userprofile)
 
 
 class AgentDeleteView(OrganizorAndLoginRequiredMixin, generic.DeleteView):
