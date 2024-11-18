@@ -3,14 +3,12 @@ import random
 
 from django.core.mail import send_mail
 from django.db.models.query import QuerySet
-from django.shortcuts import render
 from django.urls import reverse
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .mixins import OrganizorAndLoginRequiredMixin
 from .forms import AgentModelForm
-from leads.models import Agent, UserProfile
+from leads.models import Agent
 # Create your views here.
 
 

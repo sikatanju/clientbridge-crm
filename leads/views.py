@@ -3,14 +3,13 @@ from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse
 
 from agents.mixins import OrganizorAndLoginRequiredMixin
 
-from .models import Lead, Agent, Category
-from .forms import LeadCategoryUpdateForm, LeadForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm
+from .models import Lead, Category
+from .forms import LeadCategoryUpdateForm, LeadModelForm, CustomUserCreationForm, AssignAgentForm, CategoryModelForm
 
 # Create your views here.
 
@@ -186,13 +185,9 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super(CategoryDetailView, self).get_context_data(**kwargs)
-
         leads = self.get_object().leads.all()
-
-        context.update({
-            'leads': leads
-        })
-        
+        context.update({'leads': leads})
+    
         return context
     
 
@@ -215,47 +210,50 @@ class LeadCategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
         return reverse('leads:lead-detail', kwargs={'pk': self.get_object().pk})
 
 
+class CategoryCreateView(OrganizorAndLoginRequiredMixin, generic.CreateView):
+    template_name = "leads/category_create.html"
+    form_class = CategoryModelForm
+
+    def get_success_url(self):
+        return reverse("leads:category-list")
+
+    def form_valid(self, form):
+        category = form.save(commit=False)
+        category.organization = self.request.user.userprofile
+        category.save()
+        return super(CategoryCreateView, self).form_valid(form)
 
 
+class CategoryUpdateView(OrganizorAndLoginRequiredMixin, generic.UpdateView):
+    template_name = "leads/category_update.html"
+    form_class = CategoryModelForm
 
-"""
-def lead_create(request):
-    form = LeadModelForm()
-    if request.method == 'POST':
-        form = LeadModelForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            age = form.cleaned_data['age']
-            agent = Agent.objects.first()
-            Lead.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                age=age,
-                agent=agent
-            )
-            return redirect('/leads')
+    def get_success_url(self):
+        return reverse("leads:category-list")
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization=user.agent.organization)
+
+        return queryset
 
 
-    return render(request, "leads/lead_create.html", {'form': form})
+class CategoryDeleteView(OrganizorAndLoginRequiredMixin, generic.DeleteView):
+    template_name = "leads/category_delete.html"
 
+    def get_success_url(self):
+        return reverse("leads:category-list")
 
+    def get_queryset(self):
+        user = self.request.user
 
-
-def lead_update(request, pk):
-    form = LeadForm()
-    lead = Lead.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = LeadForm(request.POST)
-        if form.is_valid():
-            print(form.cleaned_data)
-            lead.first_name = form.cleaned_data['first_name']
-            lead.last_name = form.cleaned_data['last_name']
-            lead.age = form.cleaned_data['age']
-            lead.agent = Agent.objects.first()
-            lead.save()
-            return redirect('/leads')
-    return render(request, 'leads/lead_update.html', { 'lead' : lead, 'form': form})
-
-"""
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization=user.userprofile)
+        else:
+            queryset = Category.objects.filter(organisation=user.agent.organisation)
+        
+        return queryset
