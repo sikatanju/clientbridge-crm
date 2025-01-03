@@ -5,12 +5,16 @@
 ## Introduction
 ClientBridge-CRM is a streamlined customer relationship management (CRM) application designed to simplify the process of managing leads and the agents responsible for handling them. Built for organizations aiming to enhance their client interaction workflow, this tool provides an intuitive platform for tracking and organizing leads efficiently.
 
+<br />
+
 ## Key Features
 - **User Authentication:** Secure login system using Django's built-in authentication...
 - **Lead Management:** Create, track, and manage leads effectively...
 - **Agent Assignment:** Assign agents to leads for streamlined client relationship...
 - **Progress Updates:** Keep tabs on lead progress with easy updates...
 - **CRUD Operations:** Comprehensive Create, Read, Update, Delete support...
+
+<br />
 
 ## Tech Stack
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](#)
@@ -24,8 +28,7 @@ ClientBridge-CRM is a streamlined customer relationship management (CRM) applica
 - **Database:** PostgreSQL 🗄️...
 - **Deployment:** Hosted on DigitalOcean ☁️...
 
-## Project Structure
-The codebase is well-structured...
+<br />
 
 ## Installation
 1. Clone the repository:
@@ -51,6 +54,8 @@ The codebase is well-structured...
    python manage.py runserver
    ```
 
+<br />
+
 ## Usage
 
 1. Log In to the System
@@ -75,6 +80,8 @@ Visual indicators or reports provide insights into overall performance.
 
 5. Log Out
 End your session securely by logging out of the system.
+
+<br />
 
 ## License
 This project is licensed under the MIT License...
